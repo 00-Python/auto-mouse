@@ -37,7 +37,7 @@ if __name__ == '__main__':
         pyautogui.PAUSE = 0
         while True:
             os.system('cls')
-            inp = input('What do you want to do? (1) Counted , (2) Infinite , (3) Object from Image, (E) Exit: \n')
+            inp = input('What do you want to do? (1) Counted Random , (2) Infinite Random , (3) Object from Image, (E) Exit: \n')
             # Get the screen size
             width, height = pyautogui.size()
             neg_width = negativeNumber(width)
@@ -93,37 +93,143 @@ if __name__ == '__main__':
                     # clear the screen
                         os.system('cls')
                         inp = input('(1) Local, (2) Online \n')
+                        os.system('cls')
+                        confidence = float(input('Enter the confidence (0.1 - 0.99): '))
                         if inp == '1':
-                            # clear the screen
-                            os.system('cls')
-                            inp = input('Enter the path of the image: \n')
-                            # get the center of the image
-                            x, y = pyautogui.locateCenterOnScreen(inp, confidence=0.9)
-                            # move to the center of the image
-                            rand_x = random.randrange(neg_width/2, width/2, x)
-                            rand_y = random.randrange(neg_height/2, height/2, y)
-                            curve(pyautogui.position(), (x, y), (rand_x/21,rand_y/24), (rand_x/24,rand_y/21), 100, 1)
-                            
+                            try:
+                                # clear the screen
+                                os.system('cls')
+                                inp = input('Enter the path of the image: \n')
+                                # get the center of the image
+                                x, y = pyautogui.locateCenterOnScreen(inp, confidence=confidence)
+                                # move to the center of the image
+                                rand_x = random.randrange(neg_width/2, width/2, x)
+                                rand_y = random.randrange(neg_height/2, height/2, y)
+                                # move to the center of the image with curve
+                                curve(pyautogui.position(), (x, y), (rand_x/21, rand_y/24), (rand_x/24, rand_y/21), 100, 1)
+                            except TypeError:
+                                os.system('cls')
+                                print('Not found on screen or not enough confidence') 
+                                input('Press enter to continue...')
+                        elif inp == '2':
+                            try:
+                                # clear the screen
+                                os.system('cls')
+                                inp = input('Enter the url of the image: \n')
+                                # download the image
+                                filename = download(inp)
+                                # get the center of the image
+                                x, y = pyautogui.locateCenterOnScreen(filename, confidence=0.9)
+                                # random number between half og neg_width and half of width
+                                rand_x = random.randrange(neg_width/2, width/2, x)
+                                rand_y = random.randrange(neg_height/2, height/2, y)
+                                curve(pyautogui.position(), (x, y), (rand_x/21,rand_y/24), (rand_x/24,rand_y/21), 100, 1)
+                                # delete the file
+                                delete(filename)
+                            except TypeError:
+                                os.system('cls')
+                                print('Not found on screen or not enough confidence') 
+                                delete(filename)
+                                input('Press enter to continue...')
+                    elif inp == '2':
+                        os.system('cls')
+                        inp = input('(1) Local, (2) Online \n')
+                        os.system('cls')
+                        try:
+                            steps = int(input('Enter the amount of steps: '))
+                        except ValueError:
+                            print('Thats Not a number ;) Starting over...')
+                            input('Press enter to continue...')
+                        if inp == '1':
+                            try:
+                                try:
+                                    os.system('cls')
+                                    paths = []
+                                    clicks = []
+                                    confidence = []
+                                    try:
+                                        for step in range(1, steps+1):
+                                            inp = input('Enter the path of the image: ')
+                                            confidence = float(input('Enter the confidence (0.1 - 0.99): '))
+                                            inp2 = int(input('Enter amount of clicks: 0 - ∞ \n'))
+                                            
+                                            paths.append(inp)
+                                            clicks.append(inp2)
+                                            confidence.append(confidence)
+                                    except ValueError or TypeError: 
+                                        input('Invalid input')
+                                        continue
+                                    for i in range(len(paths)):
+                                        # get the center of the image
+                                        x, y = pyautogui.locateCenterOnScreen(paths[i], confidence=confidence[i])
+                                        # move to the center of the image with curve
+                                        rand_x = random.randrange(neg_width/2, width/2, x)
+                                        rand_y = random.randrange(neg_height/2, height/2, y)
+                                        curve(pyautogui.position(), (x, y), (rand_x/21, rand_y/24), (rand_x/24, rand_y/21), 100, 1)
+                                        if clicks[i] != 0:
+                                            for click in range(clicks[i]):
+                                                pyautogui.click()
+                                                print('Clicking...')
+                                        
+                                except TypeError:
+                                    os.system('cls')
+                                    print('The Problem is with the image: ' + paths[i])
+                                    print("Path not found or not enough confidence or not on screen")
+                                    input('Press enter to continue...')
+                            except KeyboardInterrupt:
+                                os.system('cls')
+                                print('Exiting...')
                         elif inp == '2':
                             # clear the screen
                             os.system('cls')
-                            inp = input('Enter the url of the image: \n')
-                            # download the image
-                            filename = download(inp)
-                            # get the center of the image
-                            x, y = pyautogui.locateCenterOnScreen(filename, confidence=0.9)
-                            # random number between half og neg_width and half of width
-                            rand_x = random.randrange(neg_width/2, width/2, x)
-                            rand_y = random.randrange(neg_height/2, height/2, y)
-                            curve(pyautogui.position(), (x, y), (rand_x/21,rand_y/24), (rand_x/24,rand_y/21), 100, 1)
-                            # delete the file
-                            delete(filename)
-                    elif inp == '2':
-                        inp = input('(1) Local, (2) Online \n')
-                        if inp == '1':
-                            inp = int(input('Enter the steps: \n'))
-                            
-                        
+                            try:
+                                try:
+                                    os.system('cls')
+                                    paths = []
+                                    clicks = []
+                                    filenames = []
+                                    confidence = []
+                                    try:
+                                        for step in range(1, steps+1):
+                                            inp = input('Enter the url of the image: ')
+                                            conf = float(input('Enter the confidence (0.1 - 0.99): '))
+                                            inp2 = int(input('Enter amount of clicks: 0 - ∞ \n'))
+                                            paths.append(inp)
+                                            clicks.append(inp2)
+                                            confidence.append(conf)
+                                    except ValueError or TypeError:
+                                        print('Invalid input... starting over')
+                                        input('Press enter to continue...')
+                                        continue
+                                    except AttributeError as a:
+                                        print('Typooo Somewhere... Start over')
+                                    for i in range(len(paths)):
+                                        # download the image
+                                        filename = download(paths[i])
+                                        filenames.append(filename)
+                                        # get the center of the image
+                                        x, y = pyautogui.locateCenterOnScreen(filename, confidence=confidence[i])
+                                        # move to the center of the image with curve
+                                        rand_x = random.randrange(neg_width/2, width/2, x)
+                                        rand_y = random.randrange(neg_height/2, height/2, y)
+                                        curve(pyautogui.position(), (x, y), (rand_x/21, rand_y/24), (rand_x/24, rand_y/21), 100, 1)
+                                        if clicks[i] != 0:
+                                            for click in range(clicks[i]):
+                                                pyautogui.click()
+                                                print('Clicking...')
+                                        # delete the file
+                                    for image in filenames:
+                                        delete(image)
+                                except TypeError:
+                                    os.system('cls')
+                                    print('The Problem is with the image: ' + paths[i])
+                                    print("Path not found or not enough confidence or not on screen")
+                                    delete(filename)
+                                    input('Press enter to continue...')
+                            except KeyboardInterrupt:
+                                os.system('cls')
+                                print('Exiting...')
+                                
                 except KeyboardInterrupt:
                     os.system('cls')
                     print('Exiting...')
