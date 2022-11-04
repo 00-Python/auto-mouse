@@ -119,7 +119,7 @@ if __name__ == '__main__':
                                 # download the image
                                 filename = download(inp)
                                 # get the center of the image
-                                x, y = pyautogui.locateCenterOnScreen(filename, confidence=0.9)
+                                x, y = pyautogui.locateCenterOnScreen(filename, confidence=confidence)
                                 # random number between half og neg_width and half of width
                                 rand_x = random.randrange(neg_width/2, width/2, x)
                                 rand_y = random.randrange(neg_height/2, height/2, y)
@@ -150,12 +150,13 @@ if __name__ == '__main__':
                                     try:
                                         for step in range(1, steps+1):
                                             inp = input('Enter the path of the image: ')
-                                            confidence = float(input('Enter the confidence (0.1 - 0.99): '))
+                                            conf = float(input('Enter the confidence (0.1 - 0.99): '))
                                             inp2 = int(input('Enter amount of clicks: 0 - ∞ \n'))
                                             
                                             paths.append(inp)
+                                            confidence.append(conf)
                                             clicks.append(inp2)
-                                            confidence.append(confidence)
+
                                     except ValueError or TypeError: 
                                         input('Invalid input')
                                         continue
