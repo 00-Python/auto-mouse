@@ -1,6 +1,6 @@
 # This is Go - The Auto Mouse
 ## What can it do?
-Creates random or Specified mouse movements with a more human like curve using the bezier library. So far it can do 3 things:
+Creates random amount or Specified amout of mouse movements with a more human like curve using the bezier library. So far it can do 3 things:
 
     1. Make a specified number of random movements with human-like curvature 
     2. Infinitley move around the screen to random positions with human-like curvature
